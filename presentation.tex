@@ -48,12 +48,12 @@
 	\frametitle{\insertsection}
 	\framesubtitle{\insertsubsection}
     \begin{itemize}
-        Описание к заданию: \slshape"В CTF есть много людей, которые ошибочно шифруют p, q в RSA. Но на этот раз..."\upshape\newline\newline
+        \item Описание к заданию: \slshape"В CTF есть много людей, которые ошибочно шифруют p, q в RSA. Но на этот раз..."\upshape\newline
         
-        Так же к задаче прилагаются файлы \slshape chall.py \upshape и \slshape output.txt.\upshape
-        output.txt содержит \texttt{n} - произведение p и q, \texttt{enc\char`_d} - зашифрованная секретная экспонента, \texttt{enc\char`_phi} - зашифрованная функция Эйлера, \texttt{enc\char`_flag} - зашифрованное сообщение. В \slshape chall.py \upshape содержится код для генерации этих значений и открытая экспонента \texttt{e}\newline\newline
+        \item Так же к задаче прилагаются файлы \slshape chall.py \upshape и \slshape output.txt.\upshape
+        output.txt содержит \texttt{n} - произведение p и q, $\texttt{enc\char`_d}$ - зашифрованная секретная экспонента, $\texttt{enc\char`_phi}$ - зашифрованная функция Эйлера, $\texttt{enc\char`_flag}$ - зашифрованное сообщение. В \slshape chall.py \upshape содержится код для генерации этих значений и открытая экспонента \texttt{e}\newline
     
-        Понятно, что нам нужно каким-то образом извлечь \texttt{d} или \texttt{phi} на основе \texttt{enc\char`_d} и \texttt{enc\char`_phi}.
+        \item Понятно, что нам нужно каким-то образом извлечь \texttt{d} или \texttt{phi} на основе \texttt{enc\char`_d} и \texttt{enc\char`_phi}.
     \end{itemize}
 \end{frame}
 
@@ -63,14 +63,14 @@
 	\frametitle{\insertsection}
 	\framesubtitle{\insertsubsection}
     \begin{itemize}
-        Для начала проведем анализ данных нам чисел и проверим криптосистему на уязвимость к изученным нами атакам, в числе которых: Атака повторным шифрованием, Атака Винера, Атака встреча посередине, Атака методом Ферма.\newline\newline
+        \item Для начала проведем анализ данных нам чисел и проверим криптосистему на уязвимость к изученным нами атакам, в числе которых: Атака повторным шифрованием, Атака Винера, Атака встреча посередине, Атака методом Ферма.\newline\newline
         Нам даны:\newline
         $\alert{\texttt{n}} = 2447638356...$\newline
         $\alert{\texttt{enc\char`_d}} = 2385197103...$\newline
         $\alert{\texttt{enc\char`_phi}} = 3988439673...$\newline
         $\alert{\texttt{enc\char`_flag}} = 2403368891...$\newline
-        $\alert{\texttt{e}} = 3$\newline\newline
-        Упрощая, нам дано \boldsymbol{\alert{n}} длиной 2048 бит. Также мы знаем, что длина \boldsymbol{\alert{p}} и \boldsymbol{\alert{q}} равна 1024 бита. Очевидно, что разложить \boldsymbol{\alert{n}} на множители вряд ли будет эффективным решением. 
+        $\alert{\texttt{e}} = 3$
+        \item Упрощая, нам дано $\boldsymbol{\alert{n}}$ длиной 2048 бит. Также мы знаем, что длина $\boldsymbol{\alert{p}}$ и $\boldsymbol{\alert{q}}$ равна 1024 бита. Очевидно, что разложить $\boldsymbol{\alert{n}}$ на множители вряд ли будет эффективным решением. 
     \end{itemize}
 \end{frame}
 
@@ -80,8 +80,8 @@
 	\frametitle{\insertsection}
 	\framesubtitle{\insertsubsection}
     \begin{itemize}
-        \item Атака “встреча посередине” не будет успешной, т. к. обычно она срабатывает при малой длине сообщения ($l < 64$ бит) и наличии разложения на два примерно равных множителя, битовая длина которых меньше l/2.\newline
-        \item Атака методом Ферма также не принесёт результатов, т. к. данная атака могла бы быть успешна, если p и q “близкие” друг к другу чилса (половина старших цифр числа равны).\newline
+        \item Атака “встреча посередине” не будет успешной, т. к. обычно она срабатывает при малой длине сообщения ($l < 64$ бит) и наличии разложения на два примерно равных множителя, битовая длина которых меньше $l/2$.\newline
+        \item Атака методом Ферма также не принесёт результатов, т. к. данная атака могла бы быть успешна, если $p$ и $q$ “близкие” друг к другу чилса (половина старших цифр числа равны).\newline
         \item Атака Винера гарантированно успешна, при $d<d_{кр}$, где $\alert{d_{кр}} = n^{1/4}/\sqrt{2a}$, $\alert{a} = (h+1)/\sqrt{h}$, $\alert{h} = p/q$. 
     \end{itemize}
 \end{frame}
@@ -92,8 +92,8 @@
 	\frametitle{\insertsection}
 	\framesubtitle{\insertsubsection}
     \begin{itemize}
-        \item Как мы можем заметить, для вычисления $d_{кр}$ требуется знать \boldsymbol{\alert{p}} и \boldsymbol{\alert{q}}, а мы их пока что не знаем, но мы знаем точно, что попытка атаки Винера (метод которой заключается в разложении дроби \boldsymbol{\alert{e}}/\boldsymbol{\alert{n}} в цепную дробь для последующего нахождения \boldsymbol{\alert{d}}) не принесла результата.\newline
-        \item Атака повторным шифрованием также не дала быстрого результата, из чего можем сделать вывод, что порядок \boldsymbol{\alert{e}} по модулю сообщения достаточно велик.
+        \item Как мы можем заметить, для вычисления $d_{кр}$ требуется знать $\boldsymbol{\alert{p}}$ и $\boldsymbol{\alert{q}}$, а мы их пока что не знаем, но мы знаем точно, что попытка атаки Винера (метод которой заключается в разложении дроби $\boldsymbol{\alert{e}}/\boldsymbol{\alert{n}}$ в цепную дробь для последующего нахождения $\boldsymbol{\alert{d}})$ не принесла результата.\newline
+        \item Атака повторным шифрованием также не дала быстрого результата, из чего можем сделать вывод, что порядок $\boldsymbol{\alert{e}}$ по модулю сообщения достаточно велик.
     \end{itemize}
 \end{frame}
 
@@ -103,18 +103,18 @@
 	\frametitle{\insertsection}
 	\framesubtitle{\insertsubsection}
 	\begin{itemize}
-		\item Из алгоритма работы RSA мы знаем, что d это обратное число к e по          модулю $\varphi(n)$.\newline
+		\item Из алгоритма работы RSA мы знаем, что $\boldsymbol{d}$ это обратное число к $\boldsymbol{e}$ по модулю $\varphi(n)$.\newline
             \begin{center}
-                \( e*d1 \equiv \pmod{\varphi(n)} \)\newline
-                \( e*d = k1*\varphi(n) +1 \)\newline
+                \( e \cdot d1 \equiv \pmod{\varphi(n)} \)\newline
+                \( e \cdot d = k1 \cdot \varphi(n) + 1 \)\newline
             \end{center}
-            \item Т. к. $\boldsymbol{\alert{d}} < \boldsymbol{\alert{n}}$ и \boldsymbol{\alert{e}} = 3 можем сделать вывод, что $0 < k1 < 3$. Далее распишем $d_{enc}$ используя сравнение выше.\newline
+            \item Т. к. $\boldsymbol{\alert{d}} < \boldsymbol{\alert{n}}$ и $\boldsymbol{\alert{e}} = 3$ можем сделать вывод, что $0 < k1 < 3$. Далее распишем $d_{enc}$ используя сравнение выше.\newline
             \begin{center}
                 \( d_{enc} \equiv d^3 \pmod{n} \)\newline
-                \( e^3*d_{enc} \equiv e^3*d^3 \pmod{n} \)\newline
-                \( 27d_{enc} \equiv (e*d)^3 \pmod{n} \)\newline
-                \( 27d_{enc} \equiv (k1*\varphi(n) +1) \pmod{n} \)\newline
-                \( 27d_{enc} \equiv (k1^3*\varphi^3(n) + 3k1^2*\varphi^2(n) + 3k1*\varphi(n) + 1) \pmod{n} \)\newline
+                \( e^3 \cdot d_{enc} \equiv e^3 \cdot d^3 \pmod{n} \)\newline
+                \( 27d_{enc} \equiv (e \cdot d)^3 \pmod{n} \)\newline
+                \( 27d_{enc} \equiv (k1 \cdot \varphi(n) +1) \pmod{n} \)\newline
+                \( 27d_{enc} \equiv (k1^3 \cdot \varphi^3(n) + 3k1^2 \cdot \varphi^2(n) + 3k1 \cdot \varphi(n) + 1) \pmod{n} \)\newline
 		\end{center}
 	\end{itemize}
 \end{frame}
@@ -125,10 +125,10 @@
 	\frametitle{\insertsection}
 	\framesubtitle{\insertsubsection}
 	\begin{itemize}
-            \item Заменим $\varphi^3(n)$ на $\varphi_{enc}$, т. к.\boldsymbol{\alert{e}} = 3, а сравнение выполняется по модулю \boldsymbol{\alert{n}}, также как и шифрование.\newline\newline
-            \( 27*d_{enc} \equiv (k1^3*\varphi_{enc} + 3k1^2*\varphi^2(n) + 3k1*\varphi(n) + 1) \pmod{n} \)\newline
+            \item Заменим $\varphi^3(n)$ на $\varphi_{enc}$, т. к.$\boldsymbol{\alert{e}} = 3$, а сравнение выполняется по модулю $\boldsymbol{\alert{n}}$, также как и шифрование.\newline\newline
+            \( 27d_{enc} \equiv (k1^3 \cdot \varphi_{enc} + 3k1^2 \cdot \varphi^2(n) + 3k1 \cdot \varphi(n) + 1) \pmod{n} \)\newline
             \item Перенеся всё в одну сторону можно получить квадратное сравнение от $\varphi(n)$\newline\newline
-            \( 3k1^2*2(n)+3k1*(n)+k1^3*\varphi_{enc} - 27d_{enc} + 1 \equiv 0 \pmod{n} \)\newline
+            \( 3k1^2 \cdot 2(n) + 3k1 \cdot (n) + k1^3 \cdot \varphi_{enc} - 27d_{enc} + 1 \equiv 0 \pmod{n} \)\newline
 	\end{itemize}
 \end{frame}
 
@@ -138,9 +138,9 @@
 	\frametitle{\insertsection}
 	\framesubtitle{\insertsubsection}
 	\begin{itemize}
-            \item Все переменные кроме $\varphi(n)$ даны. Однако, т.к. \boldsymbol{\alert{n}} не является простым числом, то решить такое сравнение можно только через систему сравнений по модулям множителей \boldsymbol{\alert{n}}, но в нашем случае множители неизвестны. Поэтому попробуем расписать $\varphi(n)$ для упрощения решения.\newline\newline
+            \item Все переменные кроме $\varphi(n)$ даны. Однако, т.к. $\boldsymbol{\alert{n}}$ не является простым числом, то решить такое сравнение можно только через систему сравнений по модулям множителей $\boldsymbol{\alert{n}}$, но в нашем случае множители неизвестны. Поэтому попробуем расписать $\varphi(n)$ для упрощения решения.\newline\newline
             \begin{center}
-            \( \varphi(n)=(p-1)*(q-1)=pq-p-q+1=n-p-q+1 \)\newline
+            \( \varphi(n)=(p-1)\cdot(q-1)=pq-p-q+1=n-p-q+1 \)\newline
             \( \varphi(n)-(p+q)+1 \pmod{n} \)
             \end{center}
 	\end{itemize}
@@ -153,10 +153,12 @@
         \begin{itemize}
             \item Обозначим $x=p+q$, тогда\newline
             \begin{center}
-                \( 3k1^2*\varphi^2(n) + 3k1*\varphi(n) + k1^3*\varphi_{enc} - 27d_{enc} + 1 \equiv 0 \pmod{n} \)\newline
-                \( 3k1^2*(1-x)^2 + 3k1*(1-x) + k1^3*\varphi_{enc} - 27d_{enc} + 1 \equiv 0 \pmod{n} \)\newline
-                \( 3k1^2*(1-2*x+x^2)^2 + 3k1*(1-x) + k1^3*\varphi_{enc} - 27d_{enc} + 1 \equiv 0 \pmod{n} \)\newline
-                \( 3k1^2*x^2 + (-6k1^2-3k1)*x + (3k1^2+3k1+k1^3*\varphi_{enc} - 27d_{enc} + 1) \equiv 0 \pmod{n} (1) \)
+                \( 3k1^2 \cdot \varphi^2(n) + 3k1 \cdot \varphi(n) + k1^3 
+                \cdot \varphi_{enc} - 27d_{enc} + 1 \equiv 0 \pmod{n} \)\newline
+                \( 3k1^2 \cdot (1-x)^2 + 3k1 \cdot (1-x) + k1^3 \cdot \varphi_{enc} - 27d_{enc} + 1 \equiv 0 \pmod{n} \)\newline
+                \( 3k1^2 \cdot (1-2 \cdot x+x^2)^2 + 3k1 \cdot (1-x) + k1^3 
+                \cdot \varphi_{enc} - 27d_{enc} + 1 \equiv 0 \pmod{n} \)\newline
+                \( 3k1^2 \cdot x^2 + (-6k1^2-3k1)x + (3k1^2+3k1+k1^3 \cdot \varphi_{enc} - 27d_{enc} + 1) \equiv 0 \pmod{n} (1) \)
             \end{center}
 	\end{itemize}
 \end{frame}
@@ -169,15 +171,15 @@
         \begin{itemize}
             \item Далее зная что $x = p + q$, можем сделать вывод что x гораздо меньше n. Допустим p>q.
             \begin{center}
-                \( x^2=(p+q)2=p^2+q^2+2*p*q=p^2+q^2+2n \)\newline
+                \( x^2=(p+q)2=p^2+q^2+2 \cdot p \cdot q=p^2+q^2+2n \)\newline
             \end{center}
             
-            \item Зная что \boldsymbol{\alert{p}}, \boldsymbol{\alert{q}} сгенерированы длиной 1024 бит, $p/q < 2$. Можем записать такое неравенство:\newline
-            $p\leq 2*q$, следовательно $p^2 \geq 4*q^2$. А также $q^2 \leq n$\newline
-            $p^2+q^2+2*n \leq 4*q^2+q^2+2*n$\newline
-            $x^2 \leq 5*q^2+2*n$\newline
-            $x^2 \leq 5*n+2*n$\newline
-            $x^2 \leq 7*n$\newline
+            \item Зная что $\boldsymbol{\alert{p}}$, $\boldsymbol{\alert{q}}$ сгенерированы длиной 1024 бит, $p/q < 2$. Можем записать такое неравенство:\newline
+            $p\leq 2 \cdot q$, следовательно $p^2 \geq 4 \cdot q^2$. А также $q^2 \leq n$\newline
+            $p^2+q^2+2\cdot n \leq 4 \cdot q^2+q^2+2 \cdot n$\newline
+            $x^2 \leq 5 \cdot q^2+2 \cdot n$\newline
+            $x^2 \leq 5 \cdot n+2 \cdot n$\newline
+            $x^2 \leq 7 \cdot n$\newline
 
 	\end{itemize}
 \end{frame}
@@ -189,12 +191,12 @@
 	\framesubtitle{\insertsubsection}
         \begin{itemize}
             \item Используя коэффициент a из квадратного сравнения (1) распишем неравенство для $x^2$.\newline
-            $3k1^2*x^2 \leq 3*2^2*x^2$, так как $k1 \leq 2$.\newline
-            $3k1^2*x^2 \leq 12*7*n$\newline
-            $3k1^2*x^2 \leq 84*n$\newline
-            $3k1^2*x^2+(-6k1^2-3k1)*x+(3k1^2+3k1+k1^3*\varphi_{enc}-27d_{enc}+1) < 84n$\newline
-            \item Мы знаем все числа из \boldsymbol{b} и \boldsymbol{c} коэффициентов неравенства выше, делаем вывод что \boldsymbol{b} и \boldsymbol{c} отрицательны, поэтому меняем знак на строгий.\newline
-            $3k1^2*x^2+(-6k1^2-3k1)*x+(3k1^2+3k1+k1^3*\varphi_{enc}-27d_{enc}+1)=k2*n$,
+            $3k1^2 \cdot x^2 \leq 3 \cdot 2^2 \cdot x^2$, так как $k1 \leq 2$.\newline
+            $3k1^2 \cdot x^2 \leq 12 \cdot 7 \cdot n$\newline
+            $3k1^2 \cdot x^2 \leq 84 \cdot n$\newline
+            $3k1^2 \cdot x^2+(-6k1^2-3k1)x+(3k1^2+3k1+k1^3 \cdot \varphi_{enc}-27d_{enc}+1) < 84n$\newline
+            \item Мы знаем все числа из $\boldsymbol{b}$ и $\boldsymbol{c}$ коэффициентов неравенства выше, делаем вывод что $\boldsymbol{b}$ и $\boldsymbol{c}$ отрицательны, поэтому меняем знак на строгий.\newline
+            $3k1^2 \cdot x^2+(-6k1^2-3k1) \cdot x+(3k1^2+3k1+k1^3 \cdot \varphi_{enc}-27d_{enc}+1)=k2 \cdot n$,
             где $k2 \leq 84$, $k2 \in Z$.
 	\end{itemize}
 \end{frame}
@@ -205,12 +207,12 @@
 	\frametitle{\insertsection}
 	\framesubtitle{\insertsubsection}
         \begin{itemize}
-            \item Таким образом мы можем перебрать все возможные \boldsymbol{k2} чтобы решить уравнение, корнем которого будет \boldsymbol{x}, $x=p+q$.
-            \item Для решения таска нам нужно знать $\varphi(n)$, оно находится с помощью выражения ниже, но мы также можем подсчитать p и q чтобы проверить наше решение $p*q=n$.\newline
+            \item Таким образом мы можем перебрать все возможные $\boldsymbol{k2}$ чтобы решить уравнение, корнем которого будет $\boldsymbol{x}$, $x=p+q$.
+            \item Для решения таска нам нужно знать $\varphi(n)$, оно находится с помощью выражения ниже, но мы также можем подсчитать p и q чтобы проверить наше решение $p \cdot q=n$.\newline
             $\varphi(n)=n-p-q+1$, домножим на p и перенесем всё в одну сторону.\newline\newline
-            $pn-p^2-pq+p-p*\varphi(n)=0$\newline
-            $p^2-pn-p+p*\varphi(n)+n=0$\newline
-            $p^2-p*(n-\varphi(n)+1)+n=0$
+            $pn-p^2-pq+p-p \cdot \varphi(n)=0$\newline
+            $p^2-pn-p+p \cdot \varphi(n)+n=0$\newline
+            $p^2-p \cdot (n-\varphi(n)+1)+n=0$
 	\end{itemize}
 \end{frame}
 
@@ -220,9 +222,9 @@
 	\frametitle{\insertsection}
 	\framesubtitle{\insertsubsection}
         \begin{itemize}
-            \item Решением данного квадратного уравнения будут p и q. Далее мы можем проверить выражение $p*q=n$ и переходить к финальному шагу.\newline
-            Вычисляем d = $e^{-1}\pmod{\varphi(n)}$\newline
-            Вычисляем флаг: flag = \texttt{$enc\char`_flag^d \pmod{n}$}\newline
+            \item Решением данного квадратного уравнения будут p и q. Далее мы можем проверить выражение $p \cdot q=n$ и переходить к финальному шагу.\newline
+            Вычисляем $d = e^{-1}\pmod{\varphi(n)}$\newline
+            Вычисляем флаг: $flag = \texttt{$enc\char`_flag^d \pmod{n}$}$\newline
             \item С помощью функции \texttt{long\char`_to\char`_bytes} вычисляем текстовое значение флага, которое равно:\newline
             \texttt{b"HackTM$\{$Have you warmed up? If not, I suggest you consider the case where e=65537, although I don't know if it's solvable. Why did I say that? Because I have to make this flag much longer to avoid solving it just by calculating the cubic root of enc$\char`_$flag.$\}$"}
 	\end{itemize}
@@ -296,13 +298,13 @@ print("flag=", (pow(enc_flag, d, n)))
 		\begin{center} \( c\equiv f(m) \equiv m^e \pmod{n} \) \newline
 		\( m\equiv f^{-1}(c) \equiv c^d \pmod{n} \) \newline 
 		\( d\equiv e^{-1} \pmod{\varphi(n)} \) \newline \end{center}
-		\item<2-> \boldsymbol{\alert{c}} получено возведением в степень по модулю числа m. Назовём это действие шифрованием
+		\item<2-> $\boldsymbol{\alert{c}}$ получено возведением в степень по модулю числа m. Назовём это действие шифрованием
 		\newline 
-		\boldsymbol{\alert{m}} - открытый текст, а \boldsymbol{\alert{c}} - шифртекст
+		$\boldsymbol{\alert{m}}$ - открытый текст, а $\boldsymbol{\alert{c}}$ - шифртекст
 		\newline 
-		Пара чисел (\boldsymbol{\alert{e}}, \boldsymbol{\alert{n}}) - открытый ключ
+		Пара чисел $(\boldsymbol{\alert{e}}, \boldsymbol{\alert{n}})$ - открытый ключ
 		\newline
-		\boldsymbol{\alert{d}} - закрытый ключ 
+		$\boldsymbol{\alert{d}}$ - закрытый ключ 
 	\end{itemize}
 \end{frame}
 
@@ -317,12 +319,12 @@ print("flag=", (pow(enc_flag, d, n)))
             \begin{center} $\varphi(n) = (p - 1) \cdot (q - 1)$ \end{center}
             \vspace{3mm}
         \item<2-> 
-            Выберем такое число \boldsymbol{\alert{e}}: \newline 
+            Выберем такое число $\boldsymbol{\alert{e}}$: \newline 
             \begin{center}
                \hspace{10mm} $ e \in [3, \varphi(n) - 1]$ \newline 
                 $НОД(e, \varphi(n) - 1) = 1$
             \end{center}
-            Вычислим \alert{\boldsymbol{d}}:  \newline 
+            Вычислим $\alert{\boldsymbol{d}}$:  \newline 
             \begin{center}
                 \( d\equiv e^{-1} \pmod{\varphi(n)} \)
             \end{center}
@@ -334,12 +336,12 @@ print("flag=", (pow(enc_flag, d, n)))
 	\framesubtitle{\insertsubsection}
 	\begin{itemize}
 	    \item<1-> Возьмём в качестве сообщения число $m \in [1, n-1]$ \newline 
-	    Чтобы зашифровать его, необходимо возвести \newline его в степень \boldsymbol{\alert{e}} по модулю \boldsymbol{\alert{n}} \newline 
+	    Чтобы зашифровать его, необходимо возвести \newline его в степень $\boldsymbol{\alert{e}}$ по модулю $\boldsymbol{\alert{n}}$ \newline 
 	    \begin{center}
 	         \( c\equiv m^{e} \pmod{n} \)
 	         \vspace{3mm}
 	    \end{center}
-	    Отметим также, что $\boldsymbol{\alert{c}} \in [1, n-1]$, как и \boldsymbol{\alert{m}}. Расшифруем шифртекст, возведя его в степень закрытого ключа \boldsymbol{\alert{d}}:
+	    Отметим также, что $\boldsymbol{\alert{c}} \in [1, n-1]$, как и $\boldsymbol{\alert{m}}$. Расшифруем шифртекст, возведя его в степень закрытого ключа $\boldsymbol{\alert{d}}$:
 	    
 	    \begin{center}
 	    \vspace{3mm}
