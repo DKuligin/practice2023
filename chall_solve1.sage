@@ -37,3 +37,4 @@ assert(p*q == n)
 d = pow(e, -1, phi)
 print("flag=", (pow(enc_flag, d, n)))
 #Use long_to_bytes from Crypto to get flag. 
+#print("flag=", long_to_bytes(pow(enc_flag, d, n)))
